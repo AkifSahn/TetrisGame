@@ -2,16 +2,32 @@
 
 Piece::Piece()
 {
-    srand(time(0));
-    shape = pieceType(rand() % NUMOFPIECE);
-    rotation = 0;
+    w = 3;
+    h = 3;
+    x = 0;
+    y = 0;
+
+    shapeArr = {0,
+                1,
+                0,
+                1,
+                1,
+                1,
+                0,
+                1,
+                0};
 }
 
-bool Piece::rotate(int rot)
+char Piece::returnPiece(int key)
 {
-    rot = (rot < 0) ? rot * -1 : rot;
-    rotation += rot;
-    rotation = rotation % 4;
+    switch (key)
+    {
+    case 1:
+        return '#';
+        break;
 
-    return true;
+    default:
+        return ' ';
+        break;
+    }
 }
