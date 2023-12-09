@@ -1,5 +1,16 @@
 #include "Piece.hpp"
 
+int standardPieces[10][9] = {{0, 1, 0, 1, 1, 1, 0, 1, 0},  // plus
+                             {1, 1, 0, 1, 1, 0, 0, 0, 0},  // square
+                             {1, 0, 0, 1, 1, 0, 0, 0, 0},  // corner
+                             {1, 0, 0, 1, 0, 0, 1, 0, 0},  // line
+                             {0, 1, 1, 1, 1, 0, 0, 0, 0},  // zig-zag
+                             {1, 0, 1, 1, 1, 1, 0, 0, 0},  // U piece
+                             {1, 0, 0, 1, 1, 0, 0, 1, 0},  // step piece
+                             {0, 1, 0, 1, 1, 1, 1, 0, 1},  // up arrow
+                             {1, 0, 0, 1, 1, 1, 0, 0, 1},  // Double zig-zag
+                             {0, 1, 0, 1, 1, 1, 0, 0, 0}}; // pyramid
+
 Piece::Piece()
 {
 
@@ -7,7 +18,7 @@ Piece::Piece()
 
     w = 3;
     h = 3;
-    x = 0;
+    x = 3;
     y = 0;
     rotation = 0;
 
@@ -18,7 +29,7 @@ Piece::Piece()
 
 Piece::~Piece()
 {
-    delete shapeArr;
+    // delete shapeArr;
 }
 
 char Piece::returnPiece(int key)
@@ -55,10 +66,38 @@ void Piece::rotatePiece(int r)
                 tempArr[index] = shapeArr[6 + i - 3 * j];
             }
         }
-        delete tempArr;
-        break;
-
-    default:
+        // delete tempArr;
         break;
     }
+}
+
+void Piece::moveTo(int newx, int newy)
+{
+    x = newx;
+    y = newy;
+}
+
+void Piece::updatePiece()
+{
+    y++;
+}
+
+int Piece::getIndex(int boardWidth)
+{
+    return y * boardWidth + x;
+}
+
+int *Piece::getShape()
+{
+    return shapeArr;
+}
+
+int Piece::getW()
+{
+    return w;
+}
+
+int Piece::getH()
+{
+    return h;
 }
