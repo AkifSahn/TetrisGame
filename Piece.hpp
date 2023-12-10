@@ -22,6 +22,7 @@ public:
     int getW();
     int getH();
     int getY();
+    int getX();
 
 private:
     int *shapeArr; // A 1D array simulating an 3x3 2D array.

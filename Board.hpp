@@ -21,6 +21,8 @@ public:
     void insertPiece(Piece);
 
     void rotateCurrentPiece(int);
+    // 1 moves right -1 moves left
+    void moveCurrentPiece(int);
 
 private:
     int w, h;

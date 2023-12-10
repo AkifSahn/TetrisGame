@@ -4,7 +4,7 @@
 int standardPieces[10][9] = {{0, 1, 0, 1, 1, 1, 0, 1, 0},  // plus
                              {1, 1, 0, 1, 1, 0, 0, 0, 0},  // square
                              {1, 0, 0, 1, 1, 0, 0, 0, 0},  // corner
-                             {1, 0, 0, 1, 0, 0, 1, 0, 0},  // line
+                             {0, 1, 0, 0, 1, 0, 0, 1, 0},  // line
                              {0, 1, 1, 1, 1, 0, 0, 0, 0},  // zig-zag
                              {1, 0, 1, 1, 1, 1, 0, 0, 0},  // U piece
                              {1, 0, 0, 1, 1, 0, 0, 1, 0},  // step piece
@@ -107,4 +107,9 @@ int Piece::getH()
 int Piece::getY()
 {
     return y;
+}
+
+int Piece::getX()
+{
+    return x;
 }

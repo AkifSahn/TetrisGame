@@ -9,8 +9,12 @@
 #endif
 
 #include <iostream>
+
 #include <chrono>
-#include <term.h>
+#include <thread>
+#include <future>
+
+#include <termio.h>
 #include <fcntl.h>
 
 #include "Piece.hpp"
@@ -23,6 +27,9 @@ public:
 
     // run the game
     void run();
+
+    // returns the pressed key;
+    char takeInput();
 
 private:
     Board board;

@@ -1,6 +1,6 @@
 #include "Board.hpp"
 
-Board::Board() : w(8), h(10)
+Board::Board() : w(8), h(20)
 {
     // an empty frame
     frameArray = new int[w * h];
@@ -35,7 +35,7 @@ void Board::updateBoard()
 {
 
     // clearing the frame
-    for (int i = 0; i < w * h; i++)
+    for (int i = 0; i <= w * h; i++)
     {
         frameArray[i] = 0;
     }
@@ -70,4 +70,9 @@ void Board::rotateCurrentPiece(int r)
 {
     currentPiece->rotatePiece(r);
     // insertPiece(*currentPiece);
+}
+
+void Board::moveCurrentPiece(int dir)
+{
+    currentPiece->moveTo(currentPiece->getX() + dir, currentPiece->getY());
 }
