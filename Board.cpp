@@ -1,6 +1,6 @@
 #include "Board.hpp"
 
-Board::Board() : w(8), h(8)
+Board::Board() : w(8), h(10)
 {
     // an empty frame
     frameArray = new int[w * h];
@@ -13,8 +13,8 @@ Board::Board() : w(8), h(8)
 Piece Board::createPiece()
 {
     Piece p;
-    pieces.push_back(p);
-
+    currentPiece = &p;
+    pieces.pushBack(&p);
     return p;
 }
 
@@ -34,28 +34,28 @@ void Board::renderFrame()
 void Board::updateBoard()
 {
 
+    // clearing the frame
     for (int i = 0; i < w * h; i++)
     {
         frameArray[i] = 0;
     }
 
-    for (int i = 0; i < pieces.size(); i++)
+    if (currentPiece->getY() + currentPiece->getH() < h)
+    {
+        currentPiece->updatePiece();
+    }
+
+    for (int i = 0; i < pieces.getSize(); i++)
     {
         // updating the piece coordinates updating the frameArray accordingly
-        pieces[i].updatePiece();
-        insertPiece(pieces[i]);
+        // pieces[i].rotatePiece(90);
+
+        insertPiece(*pieces[i]);
     }
 }
 
 void Board::insertPiece(Piece piece)
 {
-    /*
-        int j = 0;
-        for (int i = piece.getIndex(); i <= piece.getIndex() + 9; i++, j++)
-        {
-            frameArray[i] = piece.getShape()[j];
-        }
-     */
     for (int i = 0; i < piece.getW(); i++)
     {
         for (int j = 0; j < piece.getH(); j++)
@@ -64,4 +64,10 @@ void Board::insertPiece(Piece piece)
             frameArray[index] = piece.getShape()[i * piece.getW() + j];
         }
     }
+}
+
+void Board::rotateCurrentPiece(int r)
+{
+    currentPiece->rotatePiece(r);
+    // insertPiece(*currentPiece);
 }

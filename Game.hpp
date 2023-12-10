@@ -8,7 +8,10 @@
 #define CLEARCOMMAND "clear"
 #endif
 
-#include <stdlib.h>
+#include <iostream>
+#include <chrono>
+#include <term.h>
+#include <fcntl.h>
 
 #include "Piece.hpp"
 #include "Board.hpp"

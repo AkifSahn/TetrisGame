@@ -12,8 +12,9 @@ void Game::run()
 
     while (true)
     {
-        board.renderFrame();
+
         board.updateBoard();
+        board.renderFrame();
 
         sleep(sleepTime);
         system(CLEARCOMMAND);

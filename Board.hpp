@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include "Piece.hpp"
+#include "SimpleVector.hpp"
 
 using std::cout;
 using std::endl;
@@ -19,8 +20,12 @@ public:
     void updateBoard();
     void insertPiece(Piece);
 
+    void rotateCurrentPiece(int);
+
 private:
     int w, h;
     int *frameArray;
-    vector<Piece> pieces;
+    SimpleVector<Piece *> pieces;
+
+    Piece *currentPiece;
 };

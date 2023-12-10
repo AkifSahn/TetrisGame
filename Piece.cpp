@@ -1,4 +1,5 @@
 #include "Piece.hpp"
+#include <iostream>
 
 int standardPieces[10][9] = {{0, 1, 0, 1, 1, 1, 0, 1, 0},  // plus
                              {1, 1, 0, 1, 1, 0, 0, 0, 0},  // square
@@ -55,6 +56,7 @@ void Piece::rotatePiece(int r)
         rotation = r;
         shapeArr = standardPieces[stdIndex];
         break;
+
     case 90:
         rotation = r;
         int *tempArr = new int[w * h];
@@ -66,7 +68,7 @@ void Piece::rotatePiece(int r)
                 tempArr[index] = shapeArr[6 + i - 3 * j];
             }
         }
-        // delete tempArr;
+        shapeArr = tempArr;
         break;
     }
 }
@@ -100,4 +102,9 @@ int Piece::getW()
 int Piece::getH()
 {
     return h;
+}
+
+int Piece::getY()
+{
+    return y;
 }
