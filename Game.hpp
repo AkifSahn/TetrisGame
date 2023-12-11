@@ -10,10 +10,6 @@
 
 #include <iostream>
 
-#include <chrono>
-#include <thread>
-#include <future>
-
 #include <termio.h>
 #include <fcntl.h>
 

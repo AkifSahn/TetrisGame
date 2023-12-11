@@ -29,16 +29,6 @@ void Game::run()
         {
             board.rotateCurrentPiece(90);
         }
-        // move left
-        if (ch == 'a')
-        {
-            board.moveCurrentPiece(-1);
-        }
-        // move right
-        if (ch == 'a')
-        {
-            board.moveCurrentPiece(1);
-        }
         if (ch == 'q')
         {
             break;
@@ -47,7 +37,7 @@ void Game::run()
         board.updateBoard();
         board.renderFrame();
 
-        std::this_thread::sleep_for(std::chrono::seconds(sleepTime));
+        sleep(sleepTime);
         system(CLEARCOMMAND);
     }
 

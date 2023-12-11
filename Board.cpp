@@ -2,7 +2,7 @@
 
 Board::Board() : w(8), h(20)
 {
-    // an empty frame
+    // empty frame
     frameArray = new int[w * h];
     for (int i = 0; i < w * h; i++)
     {
