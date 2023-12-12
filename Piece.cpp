@@ -23,10 +23,10 @@ Piece::Piece()
     y = 0;
     rotation = 0;
 
-    shapeArr[w * h];
+    shapeArr = new int[w * h];
     stdIndex = rand() % 10;
 
-    for (int i = 0; i < w * h; i++)
+    for (int i = 0; i <= w * h; i++)
     {
         shapeArr[i] = standardPieces[stdIndex][i];
     }

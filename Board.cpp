@@ -1,6 +1,6 @@
 #include "Board.hpp"
 
-Board::Board() : w(8), h(20)
+Board::Board() : w(20), h(20)
 {
     // empty frame
     frameArray = new int[w * h];
@@ -16,6 +16,12 @@ Piece Board::createPiece()
     currentPiece = &p;
     pieces.pushBack(&p);
     return p;
+}
+
+Board::~Board()
+{
+    delete currentPiece;
+    delete[] frameArray;
 }
 
 void Board::renderFrame()
@@ -34,15 +40,18 @@ void Board::renderFrame()
 void Board::updateBoard()
 {
 
+    if (currentPiece->getY() + currentPiece->getH() < h)
+    {
+        currentPiece->updatePiece();
+    }
+}
+
+void Board::updateFrame()
+{
     // clearing the frame
     for (int i = 0; i <= w * h; i++)
     {
         frameArray[i] = 0;
-    }
-
-    if (currentPiece->getY() + currentPiece->getH() < h)
-    {
-        currentPiece->updatePiece();
     }
 
     for (int i = 0; i < pieces.getSize(); i++)

@@ -13,6 +13,9 @@
 #include <termio.h>
 #include <fcntl.h>
 
+#include <thread>
+#include <chrono>
+
 #include "Piece.hpp"
 #include "Board.hpp"
 
@@ -29,5 +32,5 @@ public:
 
 private:
     Board board;
-    int sleepTime; // wait time in seconds between each frame.
+    int sleepTime; // wait time in ms between each frame.
 };

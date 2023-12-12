@@ -12,12 +12,16 @@ class Board
 {
 public:
     Board();
+    ~Board();
     // Create a piece and append to the pieces.
     Piece createPiece();
     // Takes the frame, width, height of the frame.
     void renderFrame();
 
     void updateBoard();
+    // updates the frame by inserting the pieces into frame
+    void updateFrame();
+    // inserting a piece to frame
     void insertPiece(Piece);
 
     void rotateCurrentPiece(int);

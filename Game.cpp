@@ -8,6 +8,7 @@ Game::Game(int sleepTime) : sleepTime(sleepTime)
 void Game::run()
 {
 
+    int frameCount = 0;
     // Set terminal to non-blocking mode (This is required since we dont want to press Enter)
     struct termios oldt, newt;
     tcgetattr(STDIN_FILENO, &oldt);
@@ -24,7 +25,10 @@ void Game::run()
     while (true)
     {
 
+        frameCount = (frameCount + 1) % 5;
+
         ch = takeInput();
+        // ROTATING
         if (ch == 'e')
         {
             board.rotateCurrentPiece(90);
@@ -34,10 +38,26 @@ void Game::run()
             board.rotateCurrentPiece(270);
         }
 
-        board.updateBoard();
+        // MOVING
+        if (ch == 'a')
+        {
+            board.moveCurrentPiece(-1);
+        }
+        else if (ch == 'd')
+        {
+            board.moveCurrentPiece(1);
+        }
+
+        if (frameCount == 0)
+        {
+            // Moves the piece downwards. Maybe change the function name
+            board.updateBoard();
+        }
+        board.updateFrame();
         board.renderFrame();
 
-        sleep(sleepTime);
+        std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
+        // sleep(sleepTime);
         system(CLEARCOMMAND);
     }
 
