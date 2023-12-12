@@ -23,9 +23,15 @@ Piece::Piece()
     y = 0;
     rotation = 0;
 
-    // shapeArr = new int[w * h];
+    shapeArr[w * h];
     stdIndex = rand() % 10;
-    shapeArr = standardPieces[stdIndex];
+
+    for (int i = 0; i < w * h; i++)
+    {
+        shapeArr[i] = standardPieces[stdIndex][i];
+    }
+
+    // shapeArr = standardPieces[stdIndex];
 }
 
 Piece::~Piece()
@@ -50,16 +56,12 @@ char Piece::returnPiece(int key)
 void Piece::rotatePiece(int r)
 {
 
+    int tempArr[w * h]; // Use a fixed-size temporary array
+
     switch (r)
     {
-    case 0:
-        rotation = r;
-        shapeArr = standardPieces[stdIndex];
-        break;
-
     case 90:
         rotation = r;
-        int *tempArr = new int[w * h];
         for (int i = 0; i < h; i++)
         {
             for (int j = 0; j < w; j++)
@@ -68,7 +70,26 @@ void Piece::rotatePiece(int r)
                 tempArr[index] = shapeArr[6 + i - 3 * j];
             }
         }
-        shapeArr = tempArr;
+        for (int i = 0; i < w * h; i++)
+        {
+            shapeArr[i] = tempArr[i];
+        }
+        break;
+
+    case 270:
+        rotation = r;
+        for (int i = 0; i < h; i++)
+        {
+            for (int j = 0; j < w; j++)
+            {
+                int index = i * w + j;
+                tempArr[index] = shapeArr[2 - i + 3 * j];
+            }
+        }
+        for (int i = 0; i < w * h; i++)
+        {
+            shapeArr[i] = tempArr[i];
+        }
         break;
     }
 }

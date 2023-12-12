@@ -29,9 +29,9 @@ void Game::run()
         {
             board.rotateCurrentPiece(90);
         }
-        if (ch == 'q')
+        else if (ch == 'q')
         {
-            break;
+            board.rotateCurrentPiece(270);
         }
 
         board.updateBoard();

@@ -47,9 +47,6 @@ void Board::updateBoard()
 
     for (int i = 0; i < pieces.getSize(); i++)
     {
-        // updating the piece coordinates updating the frameArray accordingly
-        // pieces[i].rotatePiece(90);
-
         insertPiece(*pieces[i]);
     }
 }
