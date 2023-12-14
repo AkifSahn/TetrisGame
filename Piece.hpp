@@ -1,13 +1,12 @@
 #pragma once
 #include <time.h>
 #include <stdlib.h>
-#include <random>
 
 class Piece
 {
 public:
     // Create a piece instance with random pieceType
-    Piece();
+    Piece(int x, int y);
     ~Piece();
     // Get a key of a piece and returns the according char.
     static char returnPiece(int);
@@ -18,11 +17,8 @@ public:
     void updatePiece();
 
     int getIndex(int);
-    int *getShape();
-    int getW();
-    int getH();
-    int getY();
-    int getX();
+
+    friend class Board;
 
 private:
     int *shapeArr; // A 1D array simulating an 3x3 2D array.

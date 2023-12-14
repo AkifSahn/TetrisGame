@@ -8,7 +8,6 @@ Game::Game(int sleepTime) : sleepTime(sleepTime)
 void Game::run()
 {
 
-    int frameCount = 0;
     // Set terminal to non-blocking mode (This is required since we dont want to press Enter)
     struct termios oldt, newt;
     tcgetattr(STDIN_FILENO, &oldt);
@@ -19,34 +18,18 @@ void Game::run()
     fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
 
     board.createPiece();
+    // board.createPiece();
 
+    int frameCount = 0;
     char ch = EOF;
+    int speed = 5;
 
     while (true)
     {
 
-        frameCount = (frameCount + 1) % 5;
-
+        frameCount = (frameCount + 1) % speed;
         ch = takeInput();
-        // ROTATING
-        if (ch == 'e')
-        {
-            board.rotateCurrentPiece(90);
-        }
-        else if (ch == 'q')
-        {
-            board.rotateCurrentPiece(270);
-        }
-
-        // MOVING
-        if (ch == 'a')
-        {
-            board.moveCurrentPiece(-1);
-        }
-        else if (ch == 'd')
-        {
-            board.moveCurrentPiece(1);
-        }
+        handleInput(ch);
 
         if (frameCount == 0)
         {
@@ -57,7 +40,6 @@ void Game::run()
         board.renderFrame();
 
         std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
-        // sleep(sleepTime);
         system(CLEARCOMMAND);
     }
 
@@ -70,11 +52,36 @@ char Game::takeInput()
 {
     char ch;
     int n = read(STDIN_FILENO, &ch, 1);
-
     if (n > 0)
     {
         return ch;
     }
 
     return EOF;
+}
+
+void Game::handleInput(char ch)
+{
+    // ROTATING
+    if (ch == 'e')
+    {
+        board.rotateCurrentPiece(90);
+    }
+    else if (ch == 'q')
+    {
+        board.rotateCurrentPiece(270);
+    }
+
+    // MOVING
+    if (ch == 'a')
+    {
+        board.moveCurrentPiece(-1);
+    }
+    else if (ch == 'd')
+    {
+        board.moveCurrentPiece(1);
+    }
+
+    if (ch == 'c')
+        board.createPiece();
 }

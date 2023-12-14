@@ -30,6 +30,8 @@ public:
     // returns the pressed key;
     char takeInput();
 
+    void handleInput(char);
+
 private:
     Board board;
     int sleepTime; // wait time in ms between each frame.

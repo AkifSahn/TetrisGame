@@ -13,6 +13,10 @@ class Board
 public:
     Board();
     ~Board();
+
+    // Clears the frame with bpundaries
+    void clearFrame();
+
     // Create a piece and append to the pieces.
     Piece createPiece();
     // Takes the frame, width, height of the frame.
