@@ -38,7 +38,9 @@ public:
     bool detectCollisionHorizontalRight(Piece);
     bool detectCollisionHorizontalLeft(Piece);
 
-    void checkLineCompete();
+    void checkLineComplete();
+
+    void slideFrameArrayDown(int n); // slide the frameArray down by n times.
 
     void printFrameArray();
 

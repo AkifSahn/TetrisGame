@@ -1,6 +1,6 @@
 #include "Board.hpp"
 
-Board::Board() : w(20), h(20)
+Board::Board() : w(20), h(15)
 {
     // empty frame, with boundaries
     currentPiece = nullptr;
@@ -142,18 +142,16 @@ bool Board::detectCollisionHorizontalLeft(Piece piece)
     auto pieceShape = piece.shapeArr;
 
     int index = piece.getIndex(w); // top left coordinate of the piece
-    int diff;
     for (int i = 0; i < piece.h; i++)
     {
         for (int j = 0; j < piece.w; j++)
         {
-            diff = i * w + j;
             if (pieceShape[i * piece.w + j] == 0)
             {
                 continue;
             }
 
-            if (frameArray[index + diff - 1] != 0 && (j == 0 || pieceShape[i * piece.w + j - 1] == 0))
+            if (frameArray[index + i * w + j - 1] != 0 && (j == 0 || pieceShape[i * piece.w + j - 1] == 0))
             {
                 return true;
             }
@@ -168,20 +166,18 @@ bool Board::detectCollisionVertical(Piece piece)
     auto pieceShape = piece.shapeArr;
 
     int index = piece.getIndex(w);
-    int diff;
     bool flag;
     for (int i = 0; i < piece.h; i++)
     {
         for (int j = 0; j < piece.w; j++)
         {
-            diff = i * w + j;
             if ((pieceShape[i * piece.w + j] == 0))
             {
                 continue;
             }
 
             // Down check
-            if (frameArray[index + diff + w] != 0 && (pieceShape[i * piece.w + j + piece.w] == 0))
+            if (frameArray[index + i * w + j + w] != 0 && (i == piece.h - 1 || pieceShape[i * piece.w + j + piece.w] == 0))
             {
                 flag = true;
                 continue;
@@ -191,7 +187,7 @@ bool Board::detectCollisionVertical(Piece piece)
     return flag;
 }
 
-void Board::checkLineCompete()
+void Board::checkLineComplete()
 {
     return;
 }
