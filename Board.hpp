@@ -35,6 +35,8 @@ public:
 
     // detects if there is another piece at the left, right or bottom of the given piece; if there is, returns true.
     bool detectCollisionVertical(Piece);
+    bool detectCollisionHorizontalRight(Piece);
+    bool detectCollisionHorizontalLeft(Piece);
 
     void checkLineCompete();
 

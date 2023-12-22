@@ -83,7 +83,7 @@ void Board::insertPiece(Piece piece)
         for (int j = 0; j < piece.h; j++)
         {
             int index = piece.getIndex(w) + i * w + j;
-            frameArray[index] = (piece.shapeArr[i * piece.w + j]) ? (piece.shapeArr[i * piece.w + j]) : frameArray[index];
+            frameArray[index] = (piece.shapeArr[i * piece.w + j]) ? (piece.shapeArr[i * piece.w + j] != 0) : frameArray[index];
         }
     }
 }
@@ -97,8 +97,69 @@ void Board::moveCurrentPiece(int dir)
 {
     int destX = currentPiece->x + dir;
     int destY = currentPiece->y;
-    if (destX + currentPiece->w < w && destX > 0) // Checking right and left borders before moving
-        currentPiece->moveTo(destX, destY);
+
+    switch (dir)
+    {
+    case -1: // moving left
+        if (!detectCollisionHorizontalLeft(*currentPiece))
+        {
+            currentPiece->moveTo(destX, destY);
+        }
+        break;
+
+    case 1: // moving right
+        if (!detectCollisionHorizontalRight(*currentPiece))
+        {
+            currentPiece->moveTo(destX, destY);
+        }
+        break;
+    }
+}
+
+bool Board::detectCollisionHorizontalRight(Piece piece)
+{
+    auto pieceShape = piece.shapeArr;
+
+    int index = piece.getIndex(w); // top left coordinate of the piece
+    for (int i = 0; i < piece.h; i++)
+    {
+        for (int j = 0; j < piece.w; j++)
+        {
+            if (pieceShape[i * piece.w + j] == 0)
+                continue;
+
+            if ((frameArray[index + i * w + j + 1] != 0) && (j == piece.w - 1 || pieceShape[i * piece.w + j + 1] == 0))
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool Board::detectCollisionHorizontalLeft(Piece piece)
+{
+    auto pieceShape = piece.shapeArr;
+
+    int index = piece.getIndex(w); // top left coordinate of the piece
+    int diff;
+    for (int i = 0; i < piece.h; i++)
+    {
+        for (int j = 0; j < piece.w; j++)
+        {
+            diff = i * w + j;
+            if (pieceShape[i * piece.w + j] == 0)
+            {
+                continue;
+            }
+
+            if (frameArray[index + diff - 1] != 0 && (j == 0 || pieceShape[i * piece.w + j - 1] == 0))
+            {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 bool Board::detectCollisionVertical(Piece piece)
@@ -108,22 +169,26 @@ bool Board::detectCollisionVertical(Piece piece)
 
     int index = piece.getIndex(w);
     int diff;
+    bool flag;
     for (int i = 0; i < piece.h; i++)
     {
         for (int j = 0; j < piece.w; j++)
         {
             diff = i * w + j;
-            if ((frameArray[index + diff] == 0))
+            if ((pieceShape[i * piece.w + j] == 0))
             {
                 continue;
             }
 
             // Down check
             if (frameArray[index + diff + w] != 0 && (pieceShape[i * piece.w + j + piece.w] == 0))
-                return true;
+            {
+                flag = true;
+                continue;
+            }
         }
     }
-    return false;
+    return flag;
 }
 
 void Board::checkLineCompete()
