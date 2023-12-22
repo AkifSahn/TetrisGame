@@ -1,13 +1,15 @@
 #pragma once
 
 #include <iostream>
-#include <vector>
+#include <string>
+#include <random>
+#include <time.h>
+
 #include "Piece.hpp"
 #include "SimpleVector.hpp"
 
 using std::cout;
 using std::endl;
-using std::vector;
 
 class Board
 {
@@ -24,16 +26,16 @@ public:
     void renderFrame();
 
     void updateBoard();
-    // updates the frame by inserting the pieces into frame
+    // updates the frame by inserting the pieces into frame(calls insertPiece)
     void updateFrame();
     // inserting a piece to frame
     void insertPiece(Piece);
 
     void rotateCurrentPiece(int);
     // 1 moves right -1 moves left
-    void moveCurrentPiece(int);
+    void moveCurrentPiece(int dir);
 
-    // detects if there is another piece at the left, right or bottom of the given piece; if there is, returns true.
+    // detecting collisions
     bool detectCollisionVertical(Piece);
     bool detectCollisionHorizontalRight(Piece);
     bool detectCollisionHorizontalLeft(Piece);

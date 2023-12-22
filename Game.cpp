@@ -85,5 +85,5 @@ void Game::handleInput(char ch)
     }
 
     if (ch == 's')
-        gameSpeed /= 2;
+        gameSpeed /= 7;
 }

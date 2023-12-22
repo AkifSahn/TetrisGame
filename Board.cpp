@@ -1,6 +1,7 @@
 #include "Board.hpp"
 
-Board::Board() : w(20), h(15)
+Board::Board() : w(20),
+                 h(15)
 {
     // empty frame, with boundaries
     currentPiece = nullptr;
@@ -50,7 +51,7 @@ void Board::renderFrame()
         for (int j = 0; j < w; j++)
         {
             int index = i * w + j;
-            cout << Piece::returnPiece(frameArray[index]);
+            cout << "\033[1;40;" + std::to_string(frameArray[index]) + 'm' << Piece::returnPiece(frameArray[index]) << "\033[0m";
         }
         cout << endl;
     }
@@ -83,7 +84,11 @@ void Board::insertPiece(Piece piece)
         for (int j = 0; j < piece.h; j++)
         {
             int index = piece.getIndex(w) + i * w + j;
-            frameArray[index] = (piece.shapeArr[i * piece.w + j]) ? (piece.shapeArr[i * piece.w + j] != 0) : frameArray[index];
+
+            if (piece.shapeArr[i * piece.w + j] != 0)
+            {
+                frameArray[index] = piece.shapeArr[i * piece.w + j];
+            }
         }
     }
 }

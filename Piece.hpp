@@ -29,4 +29,6 @@ private:
     int w, h;      // Shape of the simulated 2D array
     int x, y;      // Positions(representing the index in the current frame).
     int stdIndex;  // StandardPieces index of the piece
+
+    int color; // 31=red, 32=green, 34=blue
 };

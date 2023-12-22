@@ -1,16 +1,18 @@
 #include "Piece.hpp"
 #include <iostream>
 
-int standardPieces[10][9] = {{0, 1, 0, 1, 1, 1, 0, 1, 0},  // plus
-                             {1, 1, 0, 1, 1, 0, 0, 0, 0},  // square
-                             {1, 0, 0, 1, 1, 0, 0, 0, 0},  // corner
-                             {0, 1, 0, 0, 1, 0, 0, 1, 0},  // line
-                             {0, 1, 1, 1, 1, 0, 0, 0, 0},  // zig-zag
-                             {1, 0, 1, 1, 1, 1, 0, 0, 0},  // U piece
-                             {1, 0, 0, 1, 1, 0, 0, 1, 0},  // step piece
-                             {0, 1, 0, 1, 1, 1, 1, 0, 1},  // up arrow
-                             {1, 0, 0, 1, 1, 1, 0, 0, 1},  // Double zig-zag
-                             {0, 1, 0, 1, 1, 1, 0, 0, 0}}; // pyramid
+static int standardPieces[10][9] = {{0, 1, 0, 1, 1, 1, 0, 1, 0},  // plus
+                                    {1, 1, 0, 1, 1, 0, 0, 0, 0},  // square
+                                    {1, 0, 0, 1, 1, 0, 0, 0, 0},  // corner
+                                    {0, 1, 0, 0, 1, 0, 0, 1, 0},  // line
+                                    {0, 1, 1, 1, 1, 0, 0, 0, 0},  // zig-zag
+                                    {1, 0, 1, 1, 1, 1, 0, 0, 0},  // U piece
+                                    {1, 0, 0, 1, 1, 0, 0, 1, 0},  // step piece
+                                    {0, 1, 0, 1, 1, 1, 1, 0, 1},  // up arrow
+                                    {1, 0, 0, 1, 1, 1, 0, 0, 1},  // Double zig-zag
+                                    {0, 1, 0, 1, 1, 1, 0, 0, 0}}; // pyramid
+
+static int colorList[3] = {31, 32, 34};
 
 Piece::Piece(int x, int y)
 {
@@ -26,9 +28,11 @@ Piece::Piece(int x, int y)
     shapeArr = new int[w * h];
     stdIndex = rand() % 10;
 
+    color = colorList[rand() % 3];
+
     for (int i = 0; i <= w * h; i++)
     {
-        shapeArr[i] = standardPieces[stdIndex][i];
+        shapeArr[i] = standardPieces[stdIndex][i] * color;
     }
 }
 
@@ -41,15 +45,15 @@ char Piece::returnPiece(int key)
 {
     switch (key)
     {
-    case 1:
-        return '#';
+    case 0:
+        return ' ';
         break;
     case 2:
         return 'X';
         break;
 
     default:
-        return ' ';
+        return '#';
         break;
     }
 }
