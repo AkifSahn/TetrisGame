@@ -8,6 +8,7 @@
 using std::cout;
 using std::endl;
 using std::vector;
+
 class Board
 {
 public:
@@ -31,6 +32,13 @@ public:
     void rotateCurrentPiece(int);
     // 1 moves right -1 moves left
     void moveCurrentPiece(int);
+
+    // detects if there is another piece at the left, right or bottom of the given piece; if there is, returns true.
+    bool detectCollisionVertical(Piece);
+
+    void checkLineCompete();
+
+    void printFrameArray();
 
 private:
     int w, h;

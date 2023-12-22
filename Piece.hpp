@@ -1,6 +1,7 @@
 #pragma once
 #include <time.h>
 #include <stdlib.h>
+#include "SimpleVector.hpp"
 
 class Piece
 {
@@ -16,7 +17,9 @@ public:
     void moveTo(int, int);
     void updatePiece();
 
-    int getIndex(int);
+    int getIndex(int boardWidth);
+
+    void printShape();
 
     friend class Board;
 

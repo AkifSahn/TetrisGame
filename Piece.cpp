@@ -42,6 +42,9 @@ char Piece::returnPiece(int key)
     switch (key)
     {
     case 1:
+        return '#';
+        break;
+    case 2:
         return 'X';
         break;
 
@@ -106,4 +109,16 @@ void Piece::updatePiece()
 int Piece::getIndex(int boardWidth)
 {
     return y * boardWidth + x;
+}
+
+void Piece::printShape()
+{
+    for (int i = 0; i < h; i++)
+    {
+        for (int j = 0; j < w; j++)
+        {
+            std::cout << shapeArr[i * w + j] << " ";
+        }
+        std::cout << std::endl;
+    }
 }

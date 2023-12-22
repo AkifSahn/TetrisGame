@@ -24,7 +24,7 @@ void Board::clearFrame()
 
             if (j == 0 || j == w - 1 || i == h - 1)
             {
-                frameArray[index] = 1;
+                frameArray[index] = 2;
                 continue;
             }
 
@@ -58,14 +58,11 @@ void Board::renderFrame()
 
 void Board::updateBoard()
 {
-
-    for (int i = 0; i < pieces.getSize(); i++)
+    if (!detectCollisionVertical(*currentPiece))
     {
-        if (pieces[i]->y + pieces[i]->h < h - 1)
-        {
-            pieces[i]->updatePiece();
-            return;
-        }
+
+        currentPiece->updatePiece();
+        return;
     }
     createPiece();
 }
@@ -73,7 +70,6 @@ void Board::updateBoard()
 void Board::updateFrame()
 {
     clearFrame();
-    // cout << pieces.getSize();
     for (int i = 0; i < pieces.getSize(); i++)
     {
         insertPiece(*pieces[i]);
@@ -87,8 +83,7 @@ void Board::insertPiece(Piece piece)
         for (int j = 0; j < piece.h; j++)
         {
             int index = piece.getIndex(w) + i * w + j;
-            // index = (index < 0) ? 0 : index;
-            frameArray[index] = piece.shapeArr[i * piece.w + j];
+            frameArray[index] = (piece.shapeArr[i * piece.w + j]) ? (piece.shapeArr[i * piece.w + j]) : frameArray[index];
         }
     }
 }
@@ -100,5 +95,50 @@ void Board::rotateCurrentPiece(int r)
 
 void Board::moveCurrentPiece(int dir)
 {
-    currentPiece->moveTo(currentPiece->x + dir, currentPiece->y);
+    int destX = currentPiece->x + dir;
+    int destY = currentPiece->y;
+    if (destX + currentPiece->w < w && destX > 0) // Checking right and left borders before moving
+        currentPiece->moveTo(destX, destY);
+}
+
+bool Board::detectCollisionVertical(Piece piece)
+{
+
+    auto pieceShape = piece.shapeArr;
+
+    int index = piece.getIndex(w);
+    int diff;
+    for (int i = 0; i < piece.h; i++)
+    {
+        for (int j = 0; j < piece.w; j++)
+        {
+            diff = i * w + j;
+            if ((frameArray[index + diff] == 0))
+            {
+                continue;
+            }
+
+            // Down check
+            if (frameArray[index + diff + w] != 0 && (pieceShape[i * piece.w + j + piece.w] == 0))
+                return true;
+        }
+    }
+    return false;
+}
+
+void Board::checkLineCompete()
+{
+    return;
+}
+
+void Board::printFrameArray()
+{
+    for (int i = 0; i < h; i++)
+    {
+        for (int j = 0; j < w; j++)
+        {
+            std::cout << frameArray[i * w + j] << " ";
+        }
+        std::cout << std::endl;
+    }
 }

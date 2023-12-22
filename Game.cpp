@@ -3,6 +3,7 @@
 Game::Game(int sleepTime) : sleepTime(sleepTime)
 {
     Board board;
+    gameSpeed = 500 / sleepTime;
 }
 
 void Game::run()
@@ -22,21 +23,22 @@ void Game::run()
 
     int frameCount = 0;
     char ch = EOF;
-    int speed = 5;
+    // int speed = 17;
 
     while (true)
     {
 
-        frameCount = (frameCount + 1) % speed;
+        gameSpeed = 500 / sleepTime;
         ch = takeInput();
         handleInput(ch);
+        frameCount = (frameCount + 1) % gameSpeed;
 
+        board.updateFrame();
         if (frameCount == 0)
         {
             // Moves the piece downwards. Maybe change the function name
             board.updateBoard();
         }
-        board.updateFrame();
         board.renderFrame();
 
         std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
@@ -82,6 +84,6 @@ void Game::handleInput(char ch)
         board.moveCurrentPiece(1);
     }
 
-    if (ch == 'c')
-        board.createPiece();
+    if (ch == 's')
+        gameSpeed /= 2;
 }

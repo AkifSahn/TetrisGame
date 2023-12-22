@@ -35,4 +35,5 @@ public:
 private:
     Board board;
     int sleepTime; // wait time in ms between each frame.
+    int gameSpeed;
 };

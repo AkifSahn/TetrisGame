@@ -2,7 +2,7 @@
 
 int main()
 {
-    Game game(200); // 5 fps
+    Game game(30);
     game.run();
 
     return 0;
