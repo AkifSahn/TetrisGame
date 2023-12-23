@@ -25,11 +25,11 @@ public:
     // Takes the frame, width, height of the frame.
     void renderFrame();
 
-    void updateBoard();
+    void updateCurrentPiece();
     // updates the frame by inserting the pieces into frame(calls insertPiece)
     void updateFrame();
     // inserting a piece to frame
-    void insertPiece(Piece);
+    void insertPiece(Piece, int *&dest);
 
     void rotateCurrentPiece(int);
     // 1 moves right -1 moves left
@@ -41,14 +41,15 @@ public:
     bool detectCollisionHorizontalLeft(Piece);
 
     void checkLineComplete();
-
-    void slideFrameArrayDown(int n); // slide the frameArray down by n times.
+    void slideDownFrame(int startIndex); // slides the rows above startIndex
+    void copyFrameArray(int *&source, int *&dest);
 
     void printFrameArray();
 
 private:
     int w, h;
     int *frameArray;
+    int *prevFrameArray;
     SimpleVector<Piece *> pieces;
 
     Piece *currentPiece;

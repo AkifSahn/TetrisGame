@@ -1,17 +1,20 @@
 #include "Board.hpp"
 
-Board::Board() : w(20),
-                 h(15)
+Board::Board() : w(20), h(20)
 {
     // empty frame, with boundaries
     currentPiece = nullptr;
     frameArray = new int[w * h];
+    prevFrameArray = new int[w * h];
+
     clearFrame();
+    copyFrameArray(frameArray, prevFrameArray);
 }
 Board::~Board()
 {
     delete currentPiece;
     delete[] frameArray;
+    delete[] prevFrameArray;
 }
 
 void Board::clearFrame()
@@ -44,6 +47,25 @@ Piece Board::createPiece()
     return *currentPiece;
 }
 
+void Board::updateFrame()
+{
+
+    copyFrameArray(prevFrameArray, frameArray);
+    insertPiece(*currentPiece, frameArray);
+}
+
+void Board::updateCurrentPiece()
+{
+    if (!detectCollisionVertical(*currentPiece))
+    {
+
+        currentPiece->updatePiece();
+        return;
+    }
+    insertPiece(*currentPiece, prevFrameArray);
+    createPiece();
+}
+
 void Board::renderFrame()
 {
     for (int i = 0; i < h; i++)
@@ -57,27 +79,7 @@ void Board::renderFrame()
     }
 }
 
-void Board::updateBoard()
-{
-    if (!detectCollisionVertical(*currentPiece))
-    {
-
-        currentPiece->updatePiece();
-        return;
-    }
-    createPiece();
-}
-
-void Board::updateFrame()
-{
-    clearFrame();
-    for (int i = 0; i < pieces.getSize(); i++)
-    {
-        insertPiece(*pieces[i]);
-    }
-}
-
-void Board::insertPiece(Piece piece)
+void Board::insertPiece(Piece piece, int *&dest)
 {
     for (int i = 0; i < piece.w; i++)
     {
@@ -87,7 +89,7 @@ void Board::insertPiece(Piece piece)
 
             if (piece.shapeArr[i * piece.w + j] != 0)
             {
-                frameArray[index] = piece.shapeArr[i * piece.w + j];
+                dest[index] = piece.shapeArr[i * piece.w + j];
             }
         }
     }
@@ -194,9 +196,55 @@ bool Board::detectCollisionVertical(Piece piece)
 
 void Board::checkLineComplete()
 {
-    return;
+    int count;
+    int index;
+    for (int i = h - 2; i >= 0; i--)
+    {
+        count = 0;
+        for (int j = w - 2; j >= 1; j--)
+        {
+            index = i * w + j;
+            if (prevFrameArray[index] == 0)
+                continue;
+
+            count++;
+        }
+
+        if (count == w - 2)
+        {
+            // delete the row
+            for (int j = w - 2; j >= 1; j--)
+            {
+                index = i * w + j;
+                prevFrameArray[index] = 0;
+            }
+            // slide down the frame
+            slideDownFrame(i);
+        }
+    }
 }
 
+void Board::slideDownFrame(int startIndex)
+{
+    int index;
+    for (int i = startIndex - 1; i >= 0; i--)
+    {
+        for (int j = 1; j <= w - 2; j++)
+        {
+            index = i * w + j;
+            prevFrameArray[index + w] = prevFrameArray[index];
+            prevFrameArray[index] = 0;
+        }
+    }
+}
+
+void Board::copyFrameArray(int *&source, int *&dest)
+{
+    for (int i = 0; i < w * h; i++)
+    {
+        dest[i] = source[i];
+    }
+}
 void Board::printFrameArray()
 {
     for (int i = 0; i < h; i++)

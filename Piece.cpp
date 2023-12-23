@@ -12,7 +12,8 @@ static int standardPieces[10][9] = {{0, 1, 0, 1, 1, 1, 0, 1, 0},  // plus
                                     {1, 0, 0, 1, 1, 1, 0, 0, 1},  // Double zig-zag
                                     {0, 1, 0, 1, 1, 1, 0, 0, 0}}; // pyramid
 
-static int colorList[3] = {31, 32, 34};
+static int colorList[4] = {31, 32, 33, 34};
+static int colorIndex = 0;
 
 Piece::Piece(int x, int y)
 {
@@ -28,7 +29,8 @@ Piece::Piece(int x, int y)
     shapeArr = new int[w * h];
     stdIndex = rand() % 10;
 
-    color = colorList[rand() % 3];
+    color = colorList[colorIndex];
+    colorIndex = (colorIndex + 1) % 4; // cycling through available colors
 
     for (int i = 0; i <= w * h; i++)
     {

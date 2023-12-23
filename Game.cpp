@@ -19,7 +19,6 @@ void Game::run()
     fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
 
     board.createPiece();
-    // board.createPiece();
 
     int frameCount = 0;
     char ch = EOF;
@@ -37,7 +36,8 @@ void Game::run()
         if (frameCount == 0)
         {
             // Moves the piece downwards. Maybe change the function name
-            board.updateBoard();
+            board.updateCurrentPiece();
+            board.checkLineComplete();
         }
         board.renderFrame();
 
