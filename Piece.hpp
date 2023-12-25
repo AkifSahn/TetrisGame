@@ -24,9 +24,9 @@ public:
     friend class Board;
 
 private:
-    int *shapeArr; // A 1D array simulating an 3x3 2D array.
+    int *shapeArr; // A 1D array simulating a 4x4 matrix.
     int rotation;  // 0, 90, 270
-    int w, h;      // Shape of the simulated 2D array
+    int w, h;      // Shape of the simulated matrix
     int x, y;      // Positions(representing the index in the current frame).
     int stdIndex;  // StandardPieces index of the piece
 

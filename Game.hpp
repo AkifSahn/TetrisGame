@@ -1,12 +1,7 @@
 #pragma once
 
-#ifdef _WIN32
-#include <Windows.h>
-#define CLEARCOMMAND "cls"
-#else
 #include <unistd.h>
 #define CLEARCOMMAND "clear"
-#endif
 
 #include <iostream>
 
@@ -18,17 +13,21 @@
 
 #include "Piece.hpp"
 #include "Board.hpp"
+#include "Menu.hpp"
 
 class Game
 {
 public:
     Game(int);
 
+    // display the main menu
+    void runMenu();
+
     // run the game
     void run();
 
     // returns the pressed key;
-    char takeInput();
+    static char takeInput();
 
     void handleInput(char);
 
@@ -36,4 +35,7 @@ private:
     Board board;
     int sleepTime; // wait time in ms between each frame.
     int gameSpeed;
+    int score;
+
+    bool isPlaying;
 };

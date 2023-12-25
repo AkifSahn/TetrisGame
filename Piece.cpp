@@ -1,7 +1,7 @@
 #include "Piece.hpp"
 #include <iostream>
 
-static int standardPieces[10][9] = {{0, 1, 0, 1, 1, 1, 0, 1, 0},  // plus
+/* static int standardPieces[10][9] = {{0, 1, 0, 1, 1, 1, 0, 1, 0},  // plus
                                     {1, 1, 0, 1, 1, 0, 0, 0, 0},  // square
                                     {1, 0, 0, 1, 1, 0, 0, 0, 0},  // corner
                                     {0, 1, 0, 0, 1, 0, 0, 1, 0},  // line
@@ -11,6 +11,18 @@ static int standardPieces[10][9] = {{0, 1, 0, 1, 1, 1, 0, 1, 0},  // plus
                                     {0, 1, 0, 1, 1, 1, 1, 0, 1},  // up arrow
                                     {1, 0, 0, 1, 1, 1, 0, 0, 1},  // Double zig-zag
                                     {0, 1, 0, 1, 1, 1, 0, 0, 0}}; // pyramid
+ */
+
+static int standardPieces[7][16] = {
+    {0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0}, // I-block
+    {0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0}, // j-block
+    {0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0}, // L-block
+    {0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0}, // O-block
+    {0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0}, // S-block
+    {0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0}, // T-block
+    {0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0}, // Z-block
+
+};
 
 static int colorList[4] = {31, 32, 33, 34};
 static int colorIndex = 0;
@@ -20,14 +32,14 @@ Piece::Piece(int x, int y)
 
     srand(time(0));
 
-    w = 3;
-    h = 3;
+    w = 4;
+    h = 4;
     this->x = x;
     this->y = y;
     rotation = 0;
 
     shapeArr = new int[w * h];
-    stdIndex = rand() % 10;
+    stdIndex = rand() % 7;
 
     color = colorList[colorIndex];
     colorIndex = (colorIndex + 1) % 4; // cycling through available colors
@@ -50,12 +62,12 @@ char Piece::returnPiece(int key)
     case 0:
         return ' ';
         break;
-    case 2:
-        return 'X';
+    case 30:
+        return '.';
         break;
 
     default:
-        return '#';
+        return 'O';
         break;
     }
 }
@@ -74,7 +86,7 @@ void Piece::rotatePiece(int r)
             for (int j = 0; j < w; j++)
             {
                 int index = i * w + j;
-                tempArr[index] = shapeArr[6 + i - 3 * j];
+                tempArr[index] = shapeArr[w * (w - 1) + i - w * j];
             }
         }
         for (int i = 0; i < w * h; i++)
@@ -90,7 +102,7 @@ void Piece::rotatePiece(int r)
             for (int j = 0; j < w; j++)
             {
                 int index = i * w + j;
-                tempArr[index] = shapeArr[2 - i + 3 * j];
+                tempArr[index] = shapeArr[(w - 1) - i + w * j];
             }
         }
         for (int i = 0; i < w * h; i++)

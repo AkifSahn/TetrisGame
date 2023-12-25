@@ -1,35 +1,43 @@
 #include "Game.hpp"
 
-Game::Game(int sleepTime) : sleepTime(sleepTime)
+Game::Game(int sleepTime) : sleepTime(sleepTime), score(0), isPlaying(true)
 {
     Board board;
     gameSpeed = 500 / sleepTime;
 }
 
+void Game::runMenu()
+{
+    Menu menu;
+    while (!menu.play)
+    {
+        menu.displayMenu();
+        menu.handleInput(Game::takeInput());
+        isPlaying = !menu.quit;
+        std::this_thread::sleep_for(std::chrono::milliseconds(35));
+        system(CLEARCOMMAND);
+    }
+}
+
 void Game::run()
 {
-
-    // Set terminal to non-blocking mode (This is required since we dont want to press Enter)
-    struct termios oldt, newt;
-    tcgetattr(STDIN_FILENO, &oldt);
-    newt = oldt;
-    newt.c_lflag &= ~(ICANON | ECHO);
-    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
-    int oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
-    fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
 
     board.createPiece();
 
     int frameCount = 0;
     char ch = EOF;
-    // int speed = 17;
 
-    while (true)
+    while (isPlaying)
     {
 
         gameSpeed = 500 / sleepTime;
         ch = takeInput();
         handleInput(ch);
+        if (ch == 'c')
+        {
+            isPlaying = false;
+        }
+
         frameCount = (frameCount + 1) % gameSpeed;
 
         board.updateFrame();
@@ -37,17 +45,14 @@ void Game::run()
         {
             // Moves the piece downwards. Maybe change the function name
             board.updateCurrentPiece();
-            board.checkLineComplete();
+            board.checkLineComplete(score);
         }
         board.renderFrame();
+        cout << "Score: " << score << endl;
 
         std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
         system(CLEARCOMMAND);
     }
-
-    // Restore terminal settings
-    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-    fcntl(STDIN_FILENO, F_SETFL, oldf);
 }
 
 char Game::takeInput()
@@ -85,5 +90,5 @@ void Game::handleInput(char ch)
     }
 
     if (ch == 's')
-        gameSpeed /= 7;
+        gameSpeed /= 10;
 }

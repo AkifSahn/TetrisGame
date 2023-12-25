@@ -1,0 +1,10 @@
+Keys:
+	q - Rotate left
+	e - rotate right
+	s - increase speed(hold)
+
+There are total of 7 blocks by default: 
+	Line-block, J-block, L-block, Square-block, S-block, T-block and Z-block  
+
+
+pres ENTER to return to menu.

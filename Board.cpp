@@ -28,7 +28,7 @@ void Board::clearFrame()
 
             if (j == 0 || j == w - 1 || i == h - 1)
             {
-                frameArray[index] = 2;
+                frameArray[index] = 30;
                 continue;
             }
 
@@ -68,12 +68,16 @@ void Board::updateCurrentPiece()
 
 void Board::renderFrame()
 {
+    int color;
+    int index;
     for (int i = 0; i < h; i++)
     {
         for (int j = 0; j < w; j++)
         {
-            int index = i * w + j;
-            cout << "\033[1;40;" + std::to_string(frameArray[index]) + 'm' << Piece::returnPiece(frameArray[index]) << "\033[0m";
+            index = i * w + j;
+            color = frameArray[index];
+
+            cout << "\033[40;" + std::to_string(color) + "m" << Piece::returnPiece(frameArray[index]) << "\033[0m";
         }
         cout << endl;
     }
@@ -95,9 +99,26 @@ void Board::insertPiece(Piece piece, int *&dest)
     }
 }
 
+bool Board::isRotateable(Piece &piece, int rotation)
+{
+    switch (rotation)
+    {
+    case 90:
+        return !detectCollisionHorizontalRight(piece);
+        break;
+
+    case 270:
+        return !detectCollisionHorizontalLeft(piece);
+        break;
+    default:
+        return true;
+    }
+}
+
 void Board::rotateCurrentPiece(int r)
 {
-    currentPiece->rotatePiece(r);
+    if (isRotateable(*currentPiece, r))
+        currentPiece->rotatePiece(r);
 }
 
 void Board::moveCurrentPiece(int dir)
@@ -194,7 +215,7 @@ bool Board::detectCollisionVertical(Piece piece)
     return flag;
 }
 
-void Board::checkLineComplete()
+void Board::checkLineComplete(int &score)
 {
     int count;
     int index;
@@ -220,6 +241,7 @@ void Board::checkLineComplete()
             }
             // slide down the frame
             slideDownFrame(i);
+            score += 10;
         }
     }
 }

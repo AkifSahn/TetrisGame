@@ -31,6 +31,7 @@ public:
     // inserting a piece to frame
     void insertPiece(Piece, int *&dest);
 
+    bool isRotateable(Piece &piece, int rotation);
     void rotateCurrentPiece(int);
     // 1 moves right -1 moves left
     void moveCurrentPiece(int dir);
@@ -40,7 +41,7 @@ public:
     bool detectCollisionHorizontalRight(Piece);
     bool detectCollisionHorizontalLeft(Piece);
 
-    void checkLineComplete();
+    void checkLineComplete(int &score);  // takes in score to update
     void slideDownFrame(int startIndex); // slides the rows above startIndex
     void copyFrameArray(int *&source, int *&dest);
 
