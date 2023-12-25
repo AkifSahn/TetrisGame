@@ -1,6 +1,6 @@
 #include "Board.hpp"
 
-Board::Board() : w(20), h(20)
+Board::Board() : w(20), h(20), holdingPiece(nullptr)
 {
     // empty frame, with boundaries
     currentPiece = nullptr;
@@ -267,6 +267,23 @@ void Board::copyFrameArray(int *&source, int *&dest)
         dest[i] = source[i];
     }
 }
+
+void Board::holdCurrentPiece()
+{
+    if (holdingPiece != nullptr)
+    {
+        Piece tempPiece = *holdingPiece;
+        *holdingPiece = *currentPiece;
+        *currentPiece = tempPiece;
+        currentPiece->moveTo(holdingPiece->x, holdingPiece->y);
+    }
+    else
+    {
+        holdingPiece = currentPiece;
+        createPiece();
+    }
+}
+
 void Board::printFrameArray()
 {
     for (int i = 0; i < h; i++)

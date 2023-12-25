@@ -91,4 +91,10 @@ void Game::handleInput(char ch)
 
     if (ch == 's')
         gameSpeed /= 10;
+
+    // Holding piece
+    if (ch == 'w')
+    {
+        board.holdCurrentPiece();
+    }
 }

@@ -45,6 +45,8 @@ public:
     void slideDownFrame(int startIndex); // slides the rows above startIndex
     void copyFrameArray(int *&source, int *&dest);
 
+    void holdCurrentPiece();
+
     void printFrameArray();
 
 private:
@@ -54,4 +56,7 @@ private:
     SimpleVector<Piece *> pieces;
 
     Piece *currentPiece;
+    Piece *holdingPiece;
+
+    // friend class Game;
 };

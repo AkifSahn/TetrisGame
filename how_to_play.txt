@@ -2,9 +2,13 @@ Keys:
 	q - Rotate left
 	e - rotate right
 	s - increase speed(hold)
+	w - hold a piece/use held piece
 
 There are total of 7 blocks by default: 
 	Line-block, J-block, L-block, Square-block, S-block, T-block and Z-block  
 
+Player can hold one piece at a time. 
+	If currently no piece is being held, 'hold piece' key(w) holds the current piece and creates another piece as current piece. 
+	Otherwise 'hold piece' key(w) swaps the held piece and current piece. 
 
 pres ENTER to return to menu.

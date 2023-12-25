@@ -1,18 +1,6 @@
 #include "Piece.hpp"
 #include <iostream>
 
-/* static int standardPieces[10][9] = {{0, 1, 0, 1, 1, 1, 0, 1, 0},  // plus
-                                    {1, 1, 0, 1, 1, 0, 0, 0, 0},  // square
-                                    {1, 0, 0, 1, 1, 0, 0, 0, 0},  // corner
-                                    {0, 1, 0, 0, 1, 0, 0, 1, 0},  // line
-                                    {0, 1, 1, 1, 1, 0, 0, 0, 0},  // zig-zag
-                                    {1, 0, 1, 1, 1, 1, 0, 0, 0},  // U piece
-                                    {1, 0, 0, 1, 1, 0, 0, 1, 0},  // step piece
-                                    {0, 1, 0, 1, 1, 1, 1, 0, 1},  // up arrow
-                                    {1, 0, 0, 1, 1, 1, 0, 0, 1},  // Double zig-zag
-                                    {0, 1, 0, 1, 1, 1, 0, 0, 0}}; // pyramid
- */
-
 static int standardPieces[7][16] = {
     {0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0}, // I-block
     {0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0}, // j-block
@@ -24,7 +12,7 @@ static int standardPieces[7][16] = {
 
 };
 
-static int colorList[4] = {31, 32, 33, 34};
+static int colorList[4] = {36, 32, 33, 34};
 static int colorIndex = 0;
 
 Piece::Piece(int x, int y)
