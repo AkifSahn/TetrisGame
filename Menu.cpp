@@ -1,6 +1,6 @@
 #include "Menu.hpp"
 
-std::string buttons[5] = {"Start game", "Change theme", "Add piece", "How to play?", "Quit"};
+std::string buttons[5] = {"Start game", "Change theme (To be added)", "Add piece (To be added)", "How to play?", "Quit"};
 
 Menu::Menu() : curButtonIndex(0), buttonNum(5), play(0), quit(false) {}
 

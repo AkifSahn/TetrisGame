@@ -1,6 +1,6 @@
 #include "Board.hpp"
 
-Board::Board() : w(20), h(20), holdingPiece(nullptr)
+Board::Board() : infoWidth(10), w(30), h(20), holdingPiece(nullptr)
 {
     // empty frame, with boundaries
     currentPiece = nullptr;
@@ -26,7 +26,7 @@ void Board::clearFrame()
         {
             index = i * w + j;
 
-            if (j == 0 || j == w - 1 || i == h - 1)
+            if (j == 0 || j == w - (infoWidth + 1) || i == h - 1)
             {
                 frameArray[index] = 30;
                 continue;
@@ -42,8 +42,19 @@ Piece Board::createPiece()
 
     currentPiece = nullptr;
 
-    currentPiece = new Piece(7, 0);
+    if (nextPiece == nullptr)
+    {
+        currentPiece = new Piece(7, 0);
+        nextPiece = new Piece(7, 0);
+    }
+
+    currentPiece = nextPiece;
+    currentPiece->moveTo(7, 0);
     pieces.pushBack(currentPiece);
+
+    nextPiece = nullptr;
+    nextPiece = new Piece(w - 8, 6);
+
     return *currentPiece;
 }
 
@@ -52,6 +63,8 @@ void Board::updateFrame()
 
     copyFrameArray(prevFrameArray, frameArray);
     insertPiece(*currentPiece, frameArray);
+    insertPiece(*nextPiece, frameArray);
+    displayHeldPiece();
 }
 
 void Board::updateCurrentPiece()
@@ -222,7 +235,7 @@ void Board::checkLineComplete(int &score)
     for (int i = h - 2; i >= 0; i--)
     {
         count = 0;
-        for (int j = w - 2; j >= 1; j--)
+        for (int j = w - (infoWidth + 2); j >= 1; j--)
         {
             index = i * w + j;
             if (prevFrameArray[index] == 0)
@@ -231,10 +244,10 @@ void Board::checkLineComplete(int &score)
             count++;
         }
 
-        if (count == w - 2)
+        if (count == w - (infoWidth + 2))
         {
             // delete the row
-            for (int j = w - 2; j >= 1; j--)
+            for (int j = w - (infoWidth + 2); j >= 1; j--)
             {
                 index = i * w + j;
                 prevFrameArray[index] = 0;
@@ -251,7 +264,7 @@ void Board::slideDownFrame(int startIndex)
     int index;
     for (int i = startIndex - 1; i >= 0; i--)
     {
-        for (int j = 1; j <= w - 2; j++)
+        for (int j = 1; j <= w - (infoWidth + 2); j++)
         {
             index = i * w + j;
             prevFrameArray[index + w] = prevFrameArray[index];
@@ -281,6 +294,15 @@ void Board::holdCurrentPiece()
     {
         holdingPiece = currentPiece;
         createPiece();
+    }
+}
+
+void Board::displayHeldPiece()
+{
+    if (holdingPiece != nullptr)
+    {
+        holdingPiece->moveTo(w - 8, 0);
+        insertPiece(*holdingPiece, frameArray);
     }
 }
 

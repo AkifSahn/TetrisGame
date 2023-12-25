@@ -11,4 +11,7 @@ Player can hold one piece at a time.
 	If currently no piece is being held, 'hold piece' key(w) holds the current piece and creates another piece as current piece. 
 	Otherwise 'hold piece' key(w) swaps the held piece and current piece. 
 
-pres ENTER to return to menu.
+Player can see the held piece and the next piece at the right of the board. With the first one being held piece and second one being current piece.
+
+
+press ENTER to return to menu.

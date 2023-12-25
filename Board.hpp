@@ -46,17 +46,20 @@ public:
     void copyFrameArray(int *&source, int *&dest);
 
     void holdCurrentPiece();
+    void displayHeldPiece();
 
     void printFrameArray();
 
 private:
     int w, h;
+    int infoWidth;
     int *frameArray;
     int *prevFrameArray;
     SimpleVector<Piece *> pieces;
 
     Piece *currentPiece;
     Piece *holdingPiece;
+    Piece *nextPiece;
 
     // friend class Game;
 };
