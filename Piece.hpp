@@ -1,13 +1,14 @@
 #pragma once
 #include <time.h>
 #include <stdlib.h>
+#include <fstream>
 #include "SimpleVector.hpp"
 
 class Piece
 {
 public:
     // Create a piece instance with random pieceType
-    Piece(int x, int y);
+    Piece(int x, int y, int pieceNumber);
     ~Piece();
     // Get a key of a piece and returns the according char.
     static char returnPiece(int);
@@ -18,6 +19,8 @@ public:
     void updatePiece();
 
     int getIndex(int boardWidth);
+
+    void readPieceFile();
 
     void printShape();
 

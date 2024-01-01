@@ -1,4 +1,5 @@
 #include "Board.hpp"
+#define PIECENUMBER 7
 
 Board::Board() : infoWidth(10), w(30), h(20), holdingPiece(nullptr), nextPiece(nullptr)
 {
@@ -48,7 +49,7 @@ Piece Board::createPiece()
     if (nextPiece == nullptr)
     {
         // currentPiece = new Piece(7, 0);
-        nextPiece = new Piece(7, 0);
+        nextPiece = new Piece(7, 0, PIECENUMBER);
     }
 
     currentPiece = nextPiece;
@@ -56,7 +57,7 @@ Piece Board::createPiece()
     pieces.pushBack(currentPiece);
 
     nextPiece = nullptr;
-    nextPiece = new Piece(w - 8, 6);
+    nextPiece = new Piece(w - 8, 6, PIECENUMBER);
 
     return *currentPiece;
 }

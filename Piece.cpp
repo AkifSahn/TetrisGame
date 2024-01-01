@@ -1,22 +1,15 @@
 #include "Piece.hpp"
 #include <iostream>
 
-static int standardPieces[7][16] = {
-    {0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0}, // I-block
-    {0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0}, // j-block
-    {0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0}, // L-block
-    {0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0}, // O-block
-    {0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0}, // S-block
-    {0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0}, // T-block
-    {0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0}, // Z-block
-
-};
+static int standardPieces[10][16];
 
 static int colorList[4] = {36, 32, 33, 34};
 static int colorIndex = 0;
 
-Piece::Piece(int x, int y)
+Piece::Piece(int x, int y, int pieceNumber)
 {
+
+    readPieceFile();
 
     srand(time(0));
 
@@ -27,7 +20,7 @@ Piece::Piece(int x, int y)
     rotation = 0;
 
     shapeArr = new int[w * h];
-    stdIndex = rand() % 7;
+    stdIndex = rand() % pieceNumber;
 
     color = colorList[colorIndex];
     colorIndex = (colorIndex + 1) % 4; // cycling through available colors
@@ -115,6 +108,34 @@ void Piece::updatePiece()
 int Piece::getIndex(int boardWidth)
 {
     return y * boardWidth + x;
+}
+
+void Piece::readPieceFile()
+{
+    std::fstream file;
+    file.open("pieces.txt", std::ios::in);
+    if (file.is_open())
+    {
+        std::string tp;
+        int index;
+        int pieceIndex;
+        while (index < 8)
+        {
+            getline(file, tp);
+
+            pieceIndex = 0;
+            for (int i = 0; i < tp.length(); i++)
+            {
+                if (tp[i] == '0' || tp[i] == '1')
+                {
+                    standardPieces[index][pieceIndex] = int(tp[i]) - 48;
+                    pieceIndex++;
+                }
+            }
+
+            index++;
+        }
+    }
 }
 
 void Piece::printShape()
