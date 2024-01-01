@@ -1,6 +1,6 @@
 #include "Board.hpp"
 
-Board::Board() : infoWidth(10), w(30), h(20), holdingPiece(nullptr)
+Board::Board() : infoWidth(10), w(30), h(20), holdingPiece(nullptr), nextPiece(nullptr)
 {
     // empty frame, with boundaries
     currentPiece = nullptr;
@@ -12,6 +12,9 @@ Board::Board() : infoWidth(10), w(30), h(20), holdingPiece(nullptr)
 }
 Board::~Board()
 {
+    clearFrame();
+    nextPiece = nullptr;
+    currentPiece = nullptr;
     delete currentPiece;
     delete[] frameArray;
     delete[] prevFrameArray;
@@ -44,7 +47,7 @@ Piece Board::createPiece()
 
     if (nextPiece == nullptr)
     {
-        currentPiece = new Piece(7, 0);
+        // currentPiece = new Piece(7, 0);
         nextPiece = new Piece(7, 0);
     }
 
@@ -228,6 +231,23 @@ bool Board::detectCollisionVertical(Piece piece)
     return flag;
 }
 
+bool Board::isGameOver()
+{
+    for (int i = 0; i < pieces.getSize(); i++)
+    {
+        if (pieces[i] == currentPiece)
+        {
+            continue;
+        }
+
+        if (pieces[i]->y <= 0 && pieces[i]->x < w - infoWidth)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 void Board::checkLineComplete(int &score)
 {
     int count;
@@ -294,6 +314,7 @@ void Board::holdCurrentPiece()
     {
         holdingPiece = currentPiece;
         createPiece();
+        currentPiece->moveTo(holdingPiece->x, holdingPiece->y);
     }
 }
 

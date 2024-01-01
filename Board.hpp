@@ -41,6 +41,8 @@ public:
     bool detectCollisionHorizontalRight(Piece);
     bool detectCollisionHorizontalLeft(Piece);
 
+    bool isGameOver();
+
     void checkLineComplete(int &score);  // takes in score to update
     void slideDownFrame(int startIndex); // slides the rows above startIndex
     void copyFrameArray(int *&source, int *&dest);

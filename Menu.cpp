@@ -1,8 +1,6 @@
 #include "Menu.hpp"
 
-std::string buttons[5] = {"Start game", "Change theme (To be added)", "Add piece (To be added)", "How to play?", "Quit"};
-
-Menu::Menu() : curButtonIndex(0), buttonNum(5), play(0), quit(false) {}
+Menu::Menu(std::string *buttonArr, int arrSize) : curButtonIndex(0), buttonNum(arrSize), play(0), quit(false), buttons(buttonArr), restart(false) {}
 
 void Menu::displayMenu()
 {
@@ -17,7 +15,7 @@ void Menu::displayMenu()
     }
 }
 
-void Menu::handleInput(char ch)
+void Menu::handleInput(char ch, std::function<void(Menu *)> executeButton)
 {
     if (std::tolower(ch) == 's')
     {
@@ -29,32 +27,50 @@ void Menu::handleInput(char ch)
     }
     else if (std::tolower(ch) == '\n')
     {
-        executeButton();
+        executeButton(this);
     }
 }
 
-void Menu::executeButton()
+void Menu::executeButtonMain(Menu *menu)
 {
-    switch (curButtonIndex)
+    switch (menu->curButtonIndex)
     {
     case 0: // start game
-        play = true;
+        menu->play = true;
         break;
     case 1: // change theme
         break;
     case 2: // Add piece
         break;
     case 3: // How to play?
-        printFile("how_to_play");
+        menu->printFile("how_to_play");
         break;
     case 4: // quit
-        play = true;
-        quit = true;
+        menu->play = true;
+        menu->quit = true;
         break;
 
     default:
         break;
     };
+}
+
+void Menu::executeButtonGameOver(Menu *menu)
+{
+    switch (menu->curButtonIndex)
+    {
+    case 0: // Restart the game
+        menu->play = true;
+        menu->quit = false;
+        menu->restart = true;
+        break;
+
+    case 1: // quit
+        menu->play = true;
+        menu->quit = true;
+        return;
+    }
+    return;
 }
 
 void Menu::printFile(std::string fileName)

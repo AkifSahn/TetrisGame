@@ -1,22 +1,67 @@
 #include "Game.hpp"
 
-Game::Game(int sleepTime) : sleepTime(sleepTime), score(0), isPlaying(true)
+Game::Game(int sleepTime) : sleepTime(sleepTime), score(0), isPlaying(true), restartFlag(true)
 {
     Board board;
     gameSpeed = 500 / sleepTime;
 }
 
+bool Game::isRestart()
+{
+    return restartFlag;
+}
+
 void Game::runMenu()
 {
-    Menu menu;
+
+    std::string buttons[5] = {"Start game", "Change theme (To be added)", "Add piece (To be added)", "How to play?", "Quit"};
+
+    Menu menu(buttons, 5);
+
+    std::function<void(Menu *)> execFunc = Menu::executeButtonMain;
+
     while (!menu.play)
     {
         menu.displayMenu();
-        menu.handleInput(Game::takeInput());
+        menu.handleInput(Game::takeInput(), execFunc);
         isPlaying = !menu.quit;
         std::this_thread::sleep_for(std::chrono::milliseconds(35));
         system(CLEARCOMMAND);
     }
+}
+
+void Game::gameOverMenu()
+{
+    std::string buttons[2] = {"Restart the game", "Quit"};
+
+    Menu menu(buttons, 2);
+
+    std::function<void(Menu *)> execFunc = Menu::executeButtonGameOver;
+
+    while (!menu.play)
+    {
+        menu.displayMenu();
+        menu.handleInput(Game::takeInput(), execFunc);
+        isPlaying = !menu.quit;
+        restartFlag = menu.restart;
+        std::this_thread::sleep_for(std::chrono::milliseconds(35));
+        system(CLEARCOMMAND);
+    }
+}
+
+void Game::restart()
+{
+    board.~Board();
+    board = Board();
+    score = 0;
+    isPlaying = true;
+    restartFlag = true;
+    gameSpeed = 500 / sleepTime;
+}
+
+void Game::setRestart(bool x)
+{
+    restartFlag = x;
 }
 
 void Game::run()
@@ -26,6 +71,8 @@ void Game::run()
 
     int frameCount = 0;
     char ch = EOF;
+
+    int highscore = readHighScore();
 
     while (isPlaying)
     {
@@ -43,16 +90,47 @@ void Game::run()
         board.updateFrame();
         if (frameCount == 0)
         {
-            // Moves the piece downwards. Maybe change the function name
             board.updateCurrentPiece();
             board.checkLineComplete(score);
+            isPlaying = !board.isGameOver();
         }
         board.renderFrame();
+
+        if (score > highscore)
+        {
+
+            highscore = score;
+        }
+
         cout << "Score: " << score << endl;
+        cout << "High score: " << highscore << endl;
 
         std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
         system(CLEARCOMMAND);
     }
+    if (score > readHighScore())
+    {
+        updateHighScore(score);
+    }
+}
+
+void Game::updateHighScore(int score)
+{
+
+    std::ofstream file;
+    file.open("highscore.txt");
+    file << score << std::endl;
+    file.close();
+}
+
+int Game::readHighScore()
+{
+    std::ifstream file;
+    file.open("highscore.txt");
+    std::string score;
+
+    getline(file, score);
+    return std::stoi(score);
 }
 
 char Game::takeInput()

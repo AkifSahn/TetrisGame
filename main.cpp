@@ -26,8 +26,17 @@ int main()
     startNonBlocking();
 
     Game game(30);
-    game.runMenu();
-    game.run();
+    while (game.isRestart())
+    {
+        game.setRestart(false);
+        game.runMenu();
+        game.run();
+        game.gameOverMenu();
+        if (game.isRestart())
+        {
+            game.restart();
+        }
+    }
 
     endNonBlocking();
 
