@@ -13,5 +13,15 @@ Player can hold one piece at a time.
 
 Player can see the held piece and the next piece at the right of the board. With the first one being held piece and second one being current piece.
 
+Player can add maximum of 3 custom piece with 'Add Piece' option in menu:
+	Player can add a custom piece by entering its matrix representation with 0's and 1's.
+	Player can only add 4x4 piece and must enter each 16 element of the piece matrix.
+
+	How to add a piece with 'Add piece' option in menu:
+		Player can enter a row by entering it's element comma seperated. (1,1,0,0)
+		Player can enter 'q'/'Q' as a row to discard the piece and return to the menu.
+		After finished adding row, player can press 'ENTER' to continue with next row.
+		After adding 4 rows, the main menu will automatically appear and adding custom piece is complete.
+
 
 press ENTER to return to menu.
