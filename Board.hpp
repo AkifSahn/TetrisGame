@@ -57,11 +57,12 @@ private:
     int infoWidth;
     int *frameArray;
     int *prevFrameArray;
+    int numOfPieces;
     SimpleVector<Piece *> pieces;
 
     Piece *currentPiece;
     Piece *holdingPiece;
     Piece *nextPiece;
 
-    // friend class Game;
+    friend class Game;
 };

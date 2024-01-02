@@ -26,6 +26,7 @@ private:
     bool play; // if true, proceed to the game
     bool quit; // if true, quit the game
     bool restart;
+    bool addPiece;
 
     friend class Game;
 };

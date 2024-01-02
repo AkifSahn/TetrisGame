@@ -1,7 +1,6 @@
 #include "Board.hpp"
-#define PIECENUMBER 7
 
-Board::Board() : infoWidth(10), w(30), h(20), holdingPiece(nullptr), nextPiece(nullptr)
+Board::Board() : infoWidth(10), w(30), h(20), holdingPiece(nullptr), nextPiece(nullptr), numOfPieces(7)
 {
     // empty frame, with boundaries
     currentPiece = nullptr;
@@ -49,7 +48,7 @@ Piece Board::createPiece()
     if (nextPiece == nullptr)
     {
         // currentPiece = new Piece(7, 0);
-        nextPiece = new Piece(7, 0, PIECENUMBER);
+        nextPiece = new Piece(7, 0, numOfPieces);
     }
 
     currentPiece = nextPiece;
@@ -57,7 +56,7 @@ Piece Board::createPiece()
     pieces.pushBack(currentPiece);
 
     nextPiece = nullptr;
-    nextPiece = new Piece(w - 8, 6, PIECENUMBER);
+    nextPiece = new Piece(w - 8, 6, numOfPieces);
 
     return *currentPiece;
 }

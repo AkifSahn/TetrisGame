@@ -2,8 +2,27 @@
 
 Game::Game(int sleepTime) : sleepTime(sleepTime), score(0), isPlaying(true), restartFlag(true)
 {
+    startNonBlocking();
     Board board;
     gameSpeed = 500 / sleepTime;
+}
+
+void Game::startNonBlocking()
+{
+    // Set terminal to non-blocking mode (This is required since we dont want to press Enter)
+    tcgetattr(STDIN_FILENO, &oldt);
+    newt = oldt;
+    newt.c_lflag &= ~(ICANON | ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+    oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
+    fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
+}
+
+void Game::endNonBlocking()
+{
+    // Restore terminal settings
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+    fcntl(STDIN_FILENO, F_SETFL, oldf);
 }
 
 bool Game::isRestart()
@@ -14,7 +33,7 @@ bool Game::isRestart()
 void Game::runMenu()
 {
 
-    std::string buttons[5] = {"Start game", "Change theme (To be added)", "Add piece (To be added)", "How to play?", "Quit"};
+    std::string buttons[5] = {"Start game", "Change theme (To be added)", "Add piece", "How to play?", "Quit"};
 
     Menu menu(buttons, 5);
 
@@ -25,6 +44,18 @@ void Game::runMenu()
         menu.displayMenu();
         menu.handleInput(Game::takeInput(), execFunc);
         isPlaying = !menu.quit;
+        if (board.numOfPieces >= 10)
+        {
+            buttons[2] = "Add piece | Can't add more piece";
+        }
+        else if (menu.addPiece)
+        {
+            endNonBlocking();
+            addPieceMenu();
+            startNonBlocking();
+            menu.addPiece = false;
+        }
+
         std::this_thread::sleep_for(std::chrono::milliseconds(35));
         system(CLEARCOMMAND);
     }
@@ -47,6 +78,38 @@ void Game::gameOverMenu()
         std::this_thread::sleep_for(std::chrono::milliseconds(35));
         system(CLEARCOMMAND);
     }
+}
+
+void Game::addPieceMenu()
+{
+    system(CLEARCOMMAND);
+
+    // int piece[16] = {0};
+    int index = 0;
+    std::string piece = "\n{";
+    std::string row;
+    for (int i = 0; i < 4; i++)
+    {
+
+        std::cin >> row;
+        if (row == "q" || row == "Q")
+        {
+            return;
+        }
+
+        piece += row + ",";
+    }
+    piece += "}";
+
+    addToPieces(piece);
+}
+
+void Game::addToPieces(std::string piece)
+{
+    std::ofstream file;
+    file.open("pieces.txt", std::ios_base::app); // append instead of overwrite
+    file << piece;
+    board.numOfPieces++;
 }
 
 void Game::restart()

@@ -1,6 +1,6 @@
 #include "Menu.hpp"
 
-Menu::Menu(std::string *buttonArr, int arrSize) : curButtonIndex(0), buttonNum(arrSize), play(0), quit(false), buttons(buttonArr), restart(false) {}
+Menu::Menu(std::string *buttonArr, int arrSize) : curButtonIndex(0), buttonNum(arrSize), play(0), quit(false), buttons(buttonArr), restart(false), addPiece(false) {}
 
 void Menu::displayMenu()
 {
@@ -41,6 +41,9 @@ void Menu::executeButtonMain(Menu *menu)
     case 1: // change theme
         break;
     case 2: // Add piece
+        // menu->play = true;
+        menu->addPiece = true;
+
         break;
     case 3: // How to play?
         menu->printFile("how_to_play");
