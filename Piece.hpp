@@ -20,7 +20,7 @@ public:
 
     int getIndex(int boardWidth);
 
-    void readPieceFile();
+    static void readPieceFile(int numOfPiece);
 
     void printShape();
 
@@ -33,5 +33,6 @@ private:
     int x, y;      // Positions(representing the index in the current frame).
     int stdIndex;  // StandardPieces index of the piece
 
+    // int numOfPiece;
     int color; // 31=red, 32=green, 34=blue
 };

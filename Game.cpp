@@ -1,6 +1,6 @@
 #include "Game.hpp"
 
-Game::Game(int sleepTime) : sleepTime(sleepTime), score(0), isPlaying(true), restartFlag(true)
+Game::Game(int sleepTime) : sleepTime(sleepTime), score(0), isPlaying(true)
 {
     startNonBlocking();
     Board board;
@@ -23,11 +23,6 @@ void Game::endNonBlocking()
     // Restore terminal settings
     tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
     fcntl(STDIN_FILENO, F_SETFL, oldf);
-}
-
-bool Game::isRestart()
-{
-    return restartFlag;
 }
 
 void Game::runMenu()
@@ -56,25 +51,6 @@ void Game::runMenu()
             menu.addPiece = false;
         }
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(35));
-        system(CLEARCOMMAND);
-    }
-}
-
-void Game::gameOverMenu()
-{
-    std::string buttons[2] = {"Restart the game", "Quit"};
-
-    Menu menu(buttons, 2);
-
-    std::function<void(Menu *)> execFunc = Menu::executeButtonGameOver;
-
-    while (!menu.play)
-    {
-        menu.displayMenu();
-        menu.handleInput(Game::takeInput(), execFunc);
-        isPlaying = !menu.quit;
-        restartFlag = menu.restart;
         std::this_thread::sleep_for(std::chrono::milliseconds(35));
         system(CLEARCOMMAND);
     }
@@ -112,23 +88,10 @@ void Game::addToPieces(std::string piece)
     board.numOfPieces++;
 }
 
-void Game::restart()
-{
-    board.~Board();
-    board = Board();
-    score = 0;
-    isPlaying = true;
-    restartFlag = true;
-    gameSpeed = 500 / sleepTime;
-}
-
-void Game::setRestart(bool x)
-{
-    restartFlag = x;
-}
-
 void Game::run()
 {
+
+    Piece::readPieceFile(board.numOfPieces);
 
     board.createPiece();
 

@@ -1,6 +1,6 @@
 #include "Menu.hpp"
 
-Menu::Menu(std::string *buttonArr, int arrSize) : curButtonIndex(0), buttonNum(arrSize), play(0), quit(false), buttons(buttonArr), restart(false), addPiece(false) {}
+Menu::Menu(std::string *buttonArr, int arrSize) : curButtonIndex(0), buttonNum(arrSize), play(0), quit(false), buttons(buttonArr), addPiece(false) {}
 
 void Menu::displayMenu()
 {
@@ -56,24 +56,6 @@ void Menu::executeButtonMain(Menu *menu)
     default:
         break;
     };
-}
-
-void Menu::executeButtonGameOver(Menu *menu)
-{
-    switch (menu->curButtonIndex)
-    {
-    case 0: // Restart the game
-        menu->play = true;
-        menu->quit = false;
-        menu->restart = true;
-        break;
-
-    case 1: // quit
-        menu->play = true;
-        menu->quit = true;
-        return;
-    }
-    return;
 }
 
 void Menu::printFile(std::string fileName)

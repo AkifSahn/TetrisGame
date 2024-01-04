@@ -24,15 +24,10 @@ public:
     void startNonBlocking();
     void endNonBlocking();
 
-    bool isRestart();
-
     // display the main menu
     void runMenu();
     void gameOverMenu();
     void addPieceMenu();
-
-    void restart();
-    void setRestart(bool);
 
     // run the game
     void run();
@@ -56,6 +51,5 @@ private:
     int gameSpeed;
     int score;
 
-    bool restartFlag;
     bool isPlaying;
 };

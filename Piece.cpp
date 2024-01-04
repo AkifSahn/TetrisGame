@@ -8,8 +8,7 @@ static int colorIndex = 0;
 
 Piece::Piece(int x, int y, int pieceNumber)
 {
-
-    readPieceFile();
+    // readPieceFile();
 
     srand(time(0));
 
@@ -110,16 +109,16 @@ int Piece::getIndex(int boardWidth)
     return y * boardWidth + x;
 }
 
-void Piece::readPieceFile()
+void Piece::readPieceFile(int numOfPiece)
 {
     std::fstream file;
     file.open("pieces.txt", std::ios::in);
     if (file.is_open())
     {
         std::string tp;
-        int index;
-        int pieceIndex;
-        while (index < 8)
+        int index = 0;
+        int pieceIndex = 0;
+        while (index < numOfPiece)
         {
             getline(file, tp);
 

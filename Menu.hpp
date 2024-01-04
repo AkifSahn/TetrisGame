@@ -12,9 +12,8 @@ public:
     Menu(std::string *buttonArr, int arrSize);
 
     void displayMenu();                                                   // Dısplay the buttons
-    void handleInput(char ch, std::function<void(Menu *)> executeButton); // Handles the give input accordingly
+    void handleInput(char ch, std::function<void(Menu *)> executeButton); // Handles the given input according to the executeButton function
     static void executeButtonMain(Menu *menu);
-    static void executeButtonGameOver(Menu *menu);
     static void printFile(std::string fileName);
 
 private:
@@ -25,7 +24,6 @@ private:
 
     bool play; // if true, proceed to the game
     bool quit; // if true, quit the game
-    bool restart;
     bool addPiece;
 
     friend class Game;
