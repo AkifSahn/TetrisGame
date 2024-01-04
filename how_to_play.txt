@@ -1,8 +1,9 @@
 Keys:
 	q - Rotate left
-	e - rotate right
-	s - increase speed(hold)
-	w - hold a piece/use held piece
+	e - Rotate right
+	s - Increase speed(hold)
+	w - Hold a piece/use held piece
+	c - Pause the game
 
 There are total of 7 blocks by default: 
 	Line-block, J-block, L-block, Square-block, S-block, T-block and Z-block  
@@ -18,10 +19,13 @@ Player can add maximum of 3 custom piece with 'Add Piece' option in menu:
 	Player can only add 4x4 piece and must enter each 16 element of the piece matrix.
 
 	How to add a piece with 'Add piece' option in menu:
-		Player can enter a row by entering it's element comma seperated. (1,1,0,0)
+		Player can enter a row by entering it's elements comma seperated(1,1,0,0). (1100) works too.
 		Player can enter 'q'/'Q' as a row to discard the piece and return to the menu.
 		After finished adding row, player can press 'ENTER' to continue with next row.
 		After adding 4 rows, the main menu will automatically appear and adding custom piece is complete.
 
+Player can change the theme of the game with 'Change theme' option in main menu or pause menu at any time.
+	Changing theme, only changes the displaying character of pieces in screen.
+	There are 3 themes: X, #, and O. O is selected by default. 
 
 press ENTER to return to menu.

@@ -13,7 +13,11 @@ public:
 
     void displayMenu();                                                   // Dısplay the buttons
     void handleInput(char ch, std::function<void(Menu *)> executeButton); // Handles the given input according to the executeButton function
+
     static void executeButtonMain(Menu *menu);
+    static void executeButtonTheme(Menu *menu);
+    static void executeButtonPause(Menu *menu);
+
     static void printFile(std::string fileName);
 
 private:
@@ -25,6 +29,10 @@ private:
     bool play; // if true, proceed to the game
     bool quit; // if true, quit the game
     bool addPiece;
+    bool changeTheme;
+    bool adjustBoard;
+
+    char themePiece;
 
     friend class Game;
 };

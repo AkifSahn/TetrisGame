@@ -2,8 +2,8 @@
 
 Game::Game(int sleepTime) : sleepTime(sleepTime), score(0), isPlaying(true)
 {
-    startNonBlocking();
     Board board;
+    startNonBlocking();
     gameSpeed = 500 / sleepTime;
 }
 
@@ -23,69 +23,6 @@ void Game::endNonBlocking()
     // Restore terminal settings
     tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
     fcntl(STDIN_FILENO, F_SETFL, oldf);
-}
-
-void Game::runMenu()
-{
-
-    std::string buttons[5] = {"Start game", "Change theme (To be added)", "Add piece", "How to play?", "Quit"};
-
-    Menu menu(buttons, 5);
-
-    std::function<void(Menu *)> execFunc = Menu::executeButtonMain;
-
-    while (!menu.play)
-    {
-        menu.displayMenu();
-        menu.handleInput(Game::takeInput(), execFunc);
-        isPlaying = !menu.quit;
-        if (board.numOfPieces >= 10)
-        {
-            buttons[2] = "Add piece | Can't add more piece";
-        }
-        else if (menu.addPiece)
-        {
-            endNonBlocking();
-            addPieceMenu();
-            startNonBlocking();
-            menu.addPiece = false;
-        }
-
-        std::this_thread::sleep_for(std::chrono::milliseconds(35));
-        system(CLEARCOMMAND);
-    }
-}
-
-void Game::addPieceMenu()
-{
-    system(CLEARCOMMAND);
-
-    // int piece[16] = {0};
-    int index = 0;
-    std::string piece = "\n{";
-    std::string row;
-    for (int i = 0; i < 4; i++)
-    {
-
-        std::cin >> row;
-        if (row == "q" || row == "Q")
-        {
-            return;
-        }
-
-        piece += row + ",";
-    }
-    piece += "}";
-
-    addToPieces(piece);
-}
-
-void Game::addToPieces(std::string piece)
-{
-    std::ofstream file;
-    file.open("pieces.txt", std::ios_base::app); // append instead of overwrite
-    file << piece;
-    board.numOfPieces++;
 }
 
 void Game::run()
@@ -108,7 +45,7 @@ void Game::run()
         handleInput(ch);
         if (ch == 'c')
         {
-            isPlaying = false;
+            pauseMenu();
         }
 
         frameCount = (frameCount + 1) % gameSpeed;
@@ -128,8 +65,8 @@ void Game::run()
             highscore = score;
         }
 
-        cout << "Score: " << score << endl;
-        cout << "High score: " << highscore << endl;
+        cout << "\033[1;32mScore: " << score << "\033[0m" << endl;
+        cout << "\033[1;31mHigh score: " << highscore << "\033[0m" << endl;
 
         std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
         system(CLEARCOMMAND);
@@ -138,6 +75,115 @@ void Game::run()
     {
         updateHighScore(score);
     }
+}
+
+void Game::runMenu()
+{
+
+    std::string buttons[5] = {"Start game", "Change theme", "Add piece", "How to play?", "Quit"};
+
+    Menu menu(buttons, 5);
+
+    std::function<void(Menu *)> execFunc = Menu::executeButtonMain;
+
+    while (!menu.play)
+    {
+        menu.displayMenu();
+        menu.handleInput(Game::takeInput(), execFunc);
+        isPlaying = !menu.quit;
+        if (board.numOfPieces >= 10)
+        {
+            buttons[2] = "Add piece | Can't add more piece";
+        }
+        else if (menu.addPiece)
+        {
+            endNonBlocking();
+            addPieceMenu();
+            startNonBlocking();
+            menu.addPiece = false;
+        }
+        if (menu.changeTheme)
+        {
+            changeThemeMenu();
+            menu.changeTheme = false;
+        }
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(35));
+        system(CLEARCOMMAND);
+    }
+}
+
+void Game::pauseMenu()
+{
+    std::string buttons[3] = {"Continue", "Change theme", "Quit"};
+    Menu menu(buttons, 3);
+    std::function<void(Menu *)> execFunc = Menu::executeButtonPause;
+
+    while (!menu.play)
+    {
+        menu.displayMenu();
+        menu.handleInput(Game::takeInput(), execFunc);
+
+        isPlaying = !menu.quit;
+        if (menu.changeTheme)
+        {
+            changeThemeMenu();
+            menu.changeTheme = false;
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(35));
+        system(CLEARCOMMAND);
+    }
+}
+
+void Game::addPieceMenu()
+{
+    system(CLEARCOMMAND);
+
+    // int piece[16] = {0};
+    int index = 0;
+    std::string piece = "\n{";
+    std::string row;
+    for (int i = 0; i < 4; i++)
+    {
+
+        std::cout << "Enter row #" << i + 1 << ": ";
+        std::cin >> row;
+        if (row == "q" || row == "Q")
+        {
+            return;
+        }
+
+        piece += row + ",";
+    }
+    piece += "}";
+
+    addToPieces(piece);
+}
+
+void Game::changeThemeMenu()
+{
+    std::string buttons[4] = {"X theme", "# Theme", "O theme(default)", "Back"};
+    Menu menu(buttons, 4);
+
+    std::function<void(Menu *)> execFunc = Menu::executeButtonTheme;
+
+    while (!menu.play)
+    {
+        menu.displayMenu();
+        menu.handleInput(Game::takeInput(), execFunc);
+        board.blockChar = menu.themePiece;
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(35));
+        system(CLEARCOMMAND);
+    }
+}
+
+void Game::addToPieces(std::string piece)
+{
+    std::ofstream file;
+    file.open("pieces.txt", std::ios_base::app); // append instead of overwrite
+    file << piece;
+    board.numOfPieces++;
 }
 
 void Game::updateHighScore(int score)

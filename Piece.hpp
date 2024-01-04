@@ -11,7 +11,6 @@ public:
     Piece(int x, int y, int pieceNumber);
     ~Piece();
     // Get a key of a piece and returns the according char.
-    static char returnPiece(int);
     // Rotate the piece r degree. 0 rotates to default rotation.
     void rotatePiece(int);
 

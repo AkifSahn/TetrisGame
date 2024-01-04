@@ -35,23 +35,6 @@ Piece::~Piece()
     // delete[] shapeArr;
 }
 
-char Piece::returnPiece(int key)
-{
-    switch (key)
-    {
-    case 0:
-        return ' ';
-        break;
-    case 30:
-        return '.';
-        break;
-
-    default:
-        return 'O';
-        break;
-    }
-}
-
 void Piece::rotatePiece(int r)
 {
 

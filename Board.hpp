@@ -25,10 +25,14 @@ public:
     // Takes the frame, width, height of the frame.
     void renderFrame();
 
+    // static void readThemeFile(int);
+    char returnPiece(int key);
+
+    // Moves the current piece down. If piece can not move calls createPiece
     void updateCurrentPiece();
     // updates the frame by inserting the pieces into frame(calls insertPiece)
     void updateFrame();
-    // inserting a piece to frame
+    // inserts piece to given array
     void insertPiece(Piece, int *&dest);
 
     bool isRotateable(Piece &piece, int rotation);
@@ -63,6 +67,9 @@ private:
     Piece *currentPiece;
     Piece *holdingPiece;
     Piece *nextPiece;
+
+    // Char representing the blocks in screen
+    char blockChar;
 
     friend class Game;
 };

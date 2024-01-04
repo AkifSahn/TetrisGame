@@ -26,8 +26,10 @@ public:
 
     // display the main menu
     void runMenu();
-    void gameOverMenu();
     void addPieceMenu();
+    void changeThemeMenu();
+    void adjustBoardSizeMenu();
+    void pauseMenu();
 
     // run the game
     void run();

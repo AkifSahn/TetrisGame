@@ -1,6 +1,6 @@
 #include "Menu.hpp"
 
-Menu::Menu(std::string *buttonArr, int arrSize) : curButtonIndex(0), buttonNum(arrSize), play(0), quit(false), buttons(buttonArr), addPiece(false) {}
+Menu::Menu(std::string *buttonArr, int arrSize) : curButtonIndex(0), buttonNum(arrSize), play(0), quit(false), buttons(buttonArr), addPiece(false), changeTheme(false), themePiece('O'), adjustBoard(false) {}
 
 void Menu::displayMenu()
 {
@@ -39,6 +39,7 @@ void Menu::executeButtonMain(Menu *menu)
         menu->play = true;
         break;
     case 1: // change theme
+        menu->changeTheme = true;
         break;
     case 2: // Add piece
         // menu->play = true;
@@ -56,6 +57,51 @@ void Menu::executeButtonMain(Menu *menu)
     default:
         break;
     };
+}
+
+void Menu::executeButtonTheme(Menu *menu)
+{
+    switch (menu->curButtonIndex)
+    {
+    case 0: // X
+        menu->themePiece = 'X';
+        menu->play = true;
+        break;
+    case 1: // #
+        menu->themePiece = '#';
+        menu->play = true;
+        break;
+    case 2: // O
+        menu->themePiece = 'O';
+        menu->play = true;
+        break;
+    case 3: // Back
+        menu->play = true;
+
+    default:
+        menu->themePiece = 'O';
+        break;
+    }
+}
+
+void Menu::executeButtonPause(Menu *menu)
+{
+    switch (menu->curButtonIndex)
+    {
+    case 0: // continue
+        menu->play = true;
+        break;
+    case 1: // change theme
+        menu->changeTheme = true;
+        break;
+    case 2: // quit
+        menu->play = true;
+        menu->quit = true;
+        break;
+
+    default:
+        break;
+    }
 }
 
 void Menu::printFile(std::string fileName)

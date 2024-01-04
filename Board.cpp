@@ -1,6 +1,6 @@
 #include "Board.hpp"
 
-Board::Board() : infoWidth(10), w(30), h(20), holdingPiece(nullptr), nextPiece(nullptr), numOfPieces(7)
+Board::Board() : infoWidth(10), w(30), h(20), holdingPiece(nullptr), nextPiece(nullptr), numOfPieces(7), blockChar('O')
 {
     // empty frame, with boundaries
     currentPiece = nullptr;
@@ -48,11 +48,11 @@ Piece Board::createPiece()
     if (nextPiece == nullptr)
     {
         // currentPiece = new Piece(7, 0);
-        nextPiece = new Piece(7, 0, numOfPieces);
+        nextPiece = new Piece((w - infoWidth) / 2 - 2, 0, numOfPieces);
     }
 
     currentPiece = nextPiece;
-    currentPiece->moveTo(7, 0);
+    currentPiece->moveTo((w - infoWidth) / 2 - 2, 0);
     pieces.pushBack(currentPiece);
 
     nextPiece = nullptr;
@@ -93,7 +93,7 @@ void Board::renderFrame()
             index = i * w + j;
             color = frameArray[index];
 
-            cout << "\033[40;" + std::to_string(color) + "m" << Piece::returnPiece(frameArray[index]) << "\033[0m";
+            cout << "\033[40;" + std::to_string(color) + "m" << returnPiece(frameArray[index]) << "\033[0m";
         }
         cout << endl;
     }
@@ -112,6 +112,23 @@ void Board::insertPiece(Piece piece, int *&dest)
                 dest[index] = piece.shapeArr[i * piece.w + j];
             }
         }
+    }
+}
+
+char Board::returnPiece(int key)
+{
+    switch (key)
+    {
+    case 0:
+        return ' ';
+        break;
+    case 30:
+        return '.';
+        break;
+
+    default:
+        return blockChar;
+        break;
     }
 }
 
